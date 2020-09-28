@@ -1,5 +1,6 @@
 import java.util.*;
-class Contact {
+class Contact 
+{
 	Scanner sc=new Scanner(System.in);
 	String first,last,address,String,city,state,zip,phno,email;
 	public void addContact()
@@ -45,7 +46,7 @@ class Contact {
 		System.out.println("ZIP = "+this.zip);	
 		System.out.println("PHONE NUMBER ="+this.phno);	
 		System.out.println("EMAIL ="+this.email);	
-	}	
+	}
 }
 public class Address {
 	public static void main(String args[])
@@ -54,12 +55,13 @@ public class Address {
 		System.out.println("Welcome to Address Book program");
 		Scanner sc=new Scanner(System.in);
 		int x=0;
-		while(x!=4)
+		while(x!=5)
 		{
 			System.out.println("1.ADD A CONTACT");
 			System.out.println("2.EDIT A CONTACT BASED ON NAME");
 			System.out.println("3.VIEW CONTACT DETAILS BASED ON NAME");
-			System.out.println("3.EXIT");
+			System.out.println("4.DELETE A CONTACT");
+			System.out.println("5.EXIT");
 			x=sc.nextInt();
 			if(x==1)
 			{
@@ -114,6 +116,29 @@ public class Address {
 				{
 					c.get(i).viewContact();
 				}		
+			}
+			if(x==4)
+			{
+				System.out.println("Enter First Name");
+				String f=sc.next();
+				System.out.println("Enter Last Name");
+				String l=sc.next();	
+				int k=0;
+				for(int i=0;i<c.size();i++)
+				{
+					if(c.get(i).first.equalsIgnoreCase(f) && c.get(i).last.equalsIgnoreCase(l))
+					{
+						k=1;
+						c.remove(i);
+						System.out.println("Contact Deleted");
+						break;
+					}
+				}
+				if(k==0)
+				{
+					System.out.println("******No Contact found******");
+
+				}
 			}
 		}
 	}
