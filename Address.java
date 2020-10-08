@@ -1,5 +1,8 @@
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 class AddressBook {
 	String BookName;
@@ -69,16 +72,22 @@ public class Address {
 	static boolean checkDuplicate(AddressBook adbook, Contact contact) {
 		return (adbook.ar.stream().anyMatch(c -> c.equals(contact)));
 	}
+	static List<Contact> searchNameByCity(AddressBook adbook,String cityString)
+	{
+	    return adbook.ar.stream().filter(c-> c.city.equals(cityString)).collect(Collectors.toList());
+	}
 
 	public static void main(String args[]) {
 		System.out.println("Welcome to Address Book program");
 		Scanner sc = new Scanner(System.in);
 		ArrayList<AddressBook> adbook = new ArrayList<AddressBook>();
 		int r = 0;
-		while (r != 3) {
+		while (r != 5) {
 			System.out.println("1.CREATE ADDRESSBOOK");
 			System.out.println("2.ACCESS ADDRESSBOOK");
-			System.out.println("3.EXIT APPLICATION");
+			System.out.println("3.CHECK CONTACTS IN CITY");
+			System.out.println("4.CHECK CONTACTS IN STATE");
+			System.out.println("5.EXIT APPLICATION");
 			r = sc.nextInt();
 			AddressBook book;
 			switch (r) {
@@ -186,16 +195,34 @@ public class Address {
 								break;
 							}
 						}
-						break;
 					}
 				}
 				if (key == 0) {
 					System.out.println("******Address Book does not exist*******");
 				}
-			}
-			default:
 				break;
+			}
+			case 3: {
+				System.out.println("Enter the city ");
+				String city=sc.next();
+				List<Contact> l=new ArrayList();
+				for(int k=0;k<adbook.size();k++)
+				{
+					l.addAll(searchNameByCity(adbook.get(k),city));
+				}
+				if(l.size()==0)
+				{
+					System.out.println("No Contacts Found");
+				}
+				else
+				{
+				for(int k=0;k<adbook.size();k++)
+				{
+					System.out.println(l.get(k).first + " "+l.get(k).last);
+				}
+				}
 			}
 		}
 	}
+}
 }
