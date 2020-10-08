@@ -76,6 +76,10 @@ public class Address {
 	{
 	    return adbook.ar.stream().filter(c-> c.city.equals(cityString)).collect(Collectors.toList());
 	}
+	static List<Contact> searchNameByState(AddressBook adbook,String stateString)
+	{
+	    return adbook.ar.stream().filter(c-> c.state.equals(stateString)).collect(Collectors.toList());
+	}
 
 	public static void main(String args[]) {
 		System.out.println("Welcome to Address Book program");
@@ -221,6 +225,28 @@ public class Address {
 					System.out.println(l.get(k).first + " "+l.get(k).last);
 				}
 				}
+				break;
+			}
+			case 4: {
+				System.out.println("Enter the State ");
+				String state=sc.next();
+				List<Contact> l=new ArrayList();
+				for(int k=0;k<adbook.size();k++)
+				{
+					l.addAll(searchNameByState(adbook.get(k),state));
+				}
+				if(l.size()==0)
+				{
+					System.out.println("No Contacts Found");
+				}
+				else
+				{
+				for(int k=0;k<adbook.size();k++)
+				{
+					System.out.println(l.get(k).first + " "+l.get(k).last);
+				}
+				}
+				break;
 			}
 		}
 	}
