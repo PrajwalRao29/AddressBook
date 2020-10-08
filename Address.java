@@ -224,6 +224,7 @@ public class Address {
 				{
 					System.out.println(l.get(k).first + " "+l.get(k).last);
 				}
+				System.out.println("The number of persons living in city "+city+" are "+l.size());
 				}
 				break;
 			}
@@ -245,6 +246,7 @@ public class Address {
 				{
 					System.out.println(l.get(k).first + " "+l.get(k).last);
 				}
+				System.out.println("The number of persons living in state "+state+" are "+l.size());
 				}
 				break;
 			}
