@@ -86,7 +86,7 @@ public class Address {
 	}
 
 	static void sortByName(AddressBook adbook) {
-		adbook.ar.stream().sorted((c1, c2) -> c1.first.compareTo(c2.first)).forEach(System.out::println);
+		adbook.ar.stream().sorted((c1, c2) -> c1.first.concat(c1.last).compareTo(c2.first.concat(c2.last))).forEach(System.out::println);
 
 	}
 
