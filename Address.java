@@ -14,7 +14,6 @@ class Contact {
 	Scanner sc = new Scanner(System.in);
 	String first, last, address, String, city, state, zip, phno, email;
 
-
 	public boolean equals(Contact o) {
 		if (o.first.equalsIgnoreCase(this.first) && o.last.equalsIgnoreCase(this.last)) {
 			return true;
@@ -22,10 +21,9 @@ class Contact {
 			return false;
 		}
 	}
-	
-	public String toString()
-	{
-		return this.first+ " "+this.last;
+
+	public String toString() {
+		return this.first + ", " + this.last;
 	}
 
 	public void addContact() {
@@ -86,11 +84,28 @@ public class Address {
 	static List<Contact> searchNameByState(AddressBook adbook, String stateString) {
 		return adbook.ar.stream().filter(c -> c.state.equals(stateString)).collect(Collectors.toList());
 	}
-	
-	static void sortByName(AddressBook adbook)
-	{
-		adbook.ar.stream().sorted((c1,c2)->c1.first.compareTo(c2.first) & c1.last.compareTo(c2.last)).forEach(System.out::println);
-		
+
+	static void sortByName(AddressBook adbook) {
+		adbook.ar.stream().sorted((c1, c2) -> c1.first.compareTo(c2.first)).forEach(System.out::println);
+
+	}
+
+	static void sortByCity(AddressBook adbook) {
+		adbook.ar.stream().sorted((c1, c2) -> c1.city.compareTo(c2.city))
+				.forEach(c -> System.out.println(c.first + ", " + c.last + "belongs to city " + c.city));
+
+	}
+
+	static void sortByState(AddressBook adbook) {
+		adbook.ar.stream().sorted((c1, c2) -> c1.state.compareTo(c2.state))
+				.forEach(c -> System.out.println(c.first + ", " + c.last + " belongs to state " + c.state));
+
+	}
+
+	static void sortByZip(AddressBook adbook) {
+		adbook.ar.stream().sorted((c1, c2) -> c1.zip.compareTo(c2.zip))
+				.forEach(c -> System.out.println(c.first + ", " + c.last + " belongs to zip " + c.zip));
+
 	}
 
 	static ArrayList<AddressBook> createAddressBook(ArrayList<AddressBook> adbook) {
@@ -125,13 +140,16 @@ public class Address {
 			if (adbook.get(j).BookName.equalsIgnoreCase(b)) {
 				key = 1;
 				int x = 0;
-				while (x != 6) {
+				while (x != 9) {
 					System.out.println("1.ADD A CONTACT");
 					System.out.println("2.EDIT A CONTACT BASED ON NAME");
 					System.out.println("3.VIEW CONTACT DETAILS BASED ON NAME");
 					System.out.println("4.DELETE A CONTACT");
 					System.out.println("5.SORT ADDRESS BOOK BASED ON NAME");
-					System.out.println("6.EXIT CURRENT ADDRESS BOOK");
+					System.out.println("6.SORT ADDRESS BOOK BASED ON CITY");
+					System.out.println("7.SORT ADDRESS BOOK BASED ON STATE");
+					System.out.println("8.SORT ADDRESS BOOK BASED ON ZIP");
+					System.out.println("9.EXIT CURRENT ADDRESS BOOK");
 					x = sc.nextInt();
 					Contact a;
 					if (x == 1) {
@@ -201,14 +219,27 @@ public class Address {
 						sortByName(adbook.get(j));
 						break;
 					}
+						else if (x == 6) {
+						sortByCity(adbook.get(j));
+						break;
+					}
+						else if (x == 7) {
+						sortByState(adbook.get(j));
+						break;
+					}
+						else if (x == 8) {
+						sortByZip(adbook.get(j));
+						break;
+					}
 				}
 			}
 		}
 		if (key == 0) {
 			System.out.println("******Address Book does not exist*******");
-		}
+		}	
 		return adbook;
 	}
+			
 
 	static void accessByCity(ArrayList<AddressBook> adbook) {
 		Scanner sc = new Scanner(System.in);
@@ -229,7 +260,7 @@ public class Address {
 	}
 
 	static void accessByState(ArrayList<AddressBook> adbook) {
-		Scanner sc=new Scanner(System.in);
+		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the State ");
 		String state = sc.next();
 		List<Contact> l = new ArrayList();
