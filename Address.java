@@ -1,3 +1,7 @@
+import java.io.FileReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,7 +16,7 @@ class AddressBook {
 
 class Contact {
 	Scanner sc = new Scanner(System.in);
-	String first, last, address, String, city, state, zip, phno, email;
+	String first, last, address, city, state, zip, phno, email;
 
 	public boolean equals(Contact o) {
 		if (o.first.equalsIgnoreCase(this.first) && o.last.equalsIgnoreCase(this.last)) {
@@ -23,7 +27,7 @@ class Contact {
 	}
 
 	public String toString() {
-		return this.first + ", " + this.last;
+		return this.first+ ", " + this.last+ ", " + this.address + ", " + this.city+ ", " + this.state + ", " + this.zip+ ", " + this.phno+ ", " + this.email;
 	}
 
 	public void addContact() {
@@ -130,6 +134,26 @@ public class Address {
 			return createAddressBook(adbook);
 		}
 	}
+	
+	static boolean writeData(ArrayList<Contact> arr)
+	{
+		StringBuffer s=new StringBuffer();
+		arr.stream().forEach(c -> 
+		{
+		String con=c.toString().concat("\n");
+		s.append(con);
+		});
+		try
+		{
+			Path p=Paths.get("C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\DATA.txt");
+			Files.write(p,s.toString().getBytes());
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
 
 	static ArrayList<AddressBook> accessAddressBook(ArrayList<AddressBook> adbook) {
 		Scanner sc = new Scanner(System.in);
@@ -233,6 +257,7 @@ public class Address {
 					}
 				}
 			}
+			writeData(adbook.get(j).ar);
 		}
 		if (key == 0) {
 			System.out.println("******Address Book does not exist*******");
@@ -282,15 +307,17 @@ public class Address {
 		Scanner sc = new Scanner(System.in);
 		ArrayList<AddressBook> adbook = new ArrayList<AddressBook>();
 		int r = 0;
-		while (r != 5) {
+		while (r != 6) {
 			System.out.println("1.CREATE ADDRESSBOOK");
 			System.out.println("2.ACCESS ADDRESSBOOK");
 			System.out.println("3.CHECK CONTACTS IN CITY");
 			System.out.println("4.CHECK CONTACTS IN STATE");
-			System.out.println("5.EXIT APPLICATION");
+			System.out.println("5.PRINT DATA");
+			System.out.println("6.EXIT APPLICATION");
 			r = sc.nextInt();
 			AddressBook book;
-			switch (r) {
+			switch (r) 
+			{
 			case 1: {
 				adbook = createAddressBook(adbook);
 				break;
@@ -307,7 +334,19 @@ public class Address {
 				accessByState(adbook);
 				break;
 			}
+			case 5: {
+				try {
+				FileReader f=new FileReader("C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\DATA.txt");
+				int i;    
+		          while((i=f.read())!=-1)    
+		          System.out.print((char)i);    
+				}
+				catch(Exception e) {
+					
+				}
+			break;
 			}
+		}
 		}
 	}
 }
