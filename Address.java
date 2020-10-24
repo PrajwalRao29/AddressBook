@@ -1,4 +1,8 @@
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -7,6 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
+
+import com.opencsv.CSVWriter;
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 
 class AddressBook {
 	String BookName;
@@ -76,7 +84,8 @@ class Contact {
 }
 
 public class Address {
-
+	static Scanner sc = new Scanner(System.in);
+	
 	static boolean checkDuplicate(AddressBook adbook, Contact contact) {
 		return (adbook.ar.stream().anyMatch(c -> c.equals(contact)));
 	}
@@ -113,7 +122,6 @@ public class Address {
 	}
 
 	static ArrayList<AddressBook> createAddressBook(ArrayList<AddressBook> adbook) {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the address book name to be created");
 		String n = sc.next();
 		int key = 0;
@@ -145,7 +153,7 @@ public class Address {
 		});
 		try
 		{
-			Path p=Paths.get("C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\DATA.txt");
+			Path p=Paths.get("C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\src\\DATA.txt");
 			Files.write(p,s.toString().getBytes());
 			return true;
 		}
@@ -155,8 +163,29 @@ public class Address {
 		}
 	}
 
+	static boolean writeDataCSV(ArrayList <Contact> arr)
+	{
+	String filename = "C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\src\\DATAcsv.csv";
+	File outputFile = new File(filename);
+    try (FileWriter outputFileWriter = new FileWriter(outputFile);
+        	CSVWriter outputCSVWriter = new CSVWriter(outputFileWriter)){
+    	String[] header = {"First Name", "Last Name", "Address", "City", "State", "PhoneNumber", "Email", "Zip" };
+    	outputCSVWriter.writeNext(header);
+    	for(Contact contact : arr) {
+    		String[] rowData = {contact.first, contact.last, 
+    							 contact.address, contact.city, contact.state, 
+    							 contact.phno, contact.email,contact.zip};
+    		outputCSVWriter.writeNext(rowData);
+    	}
+    } catch (IOException e) {
+    	System.out.println(e.getMessage());
+    	return false;
+    } 
+    System.out.println("Address Book added to CSV");
+    return true;
+}
+    
 	static ArrayList<AddressBook> accessAddressBook(ArrayList<AddressBook> adbook) {
-		Scanner sc = new Scanner(System.in);
 		int key = 0;
 		System.out.println("Enter the address book name to be accessed");
 		String b = sc.next();
@@ -258,6 +287,7 @@ public class Address {
 				}
 			}
 			writeData(adbook.get(j).ar);
+			writeDataCSV(adbook.get(j).ar);
 		}
 		if (key == 0) {
 			System.out.println("******Address Book does not exist*******");
@@ -267,7 +297,6 @@ public class Address {
 			
 
 	static void accessByCity(ArrayList<AddressBook> adbook) {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the city ");
 		String city = sc.next();
 		List<Contact> l = new ArrayList();
@@ -285,7 +314,6 @@ public class Address {
 	}
 
 	static void accessByState(ArrayList<AddressBook> adbook) {
-		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter the State ");
 		String state = sc.next();
 		List<Contact> l = new ArrayList();
@@ -304,7 +332,6 @@ public class Address {
 
 	public static void main(String args[]) {
 		System.out.println("Welcome to Address Book program");
-		Scanner sc = new Scanner(System.in);
 		ArrayList<AddressBook> adbook = new ArrayList<AddressBook>();
 		int r = 0;
 		while (r != 6) {
@@ -340,6 +367,7 @@ public class Address {
 				int i;    
 		          while((i=f.read())!=-1)    
 		          System.out.print((char)i);    
+		          f.close();
 				}
 				catch(Exception e) {
 					
