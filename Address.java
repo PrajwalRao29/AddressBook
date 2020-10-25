@@ -2,19 +2,20 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.opencsv.CSVWriter;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 
 class AddressBook {
 	String BookName;
@@ -181,10 +182,26 @@ public class Address {
     	System.out.println(e.getMessage());
     	return false;
     } 
-    System.out.println("Address Book added to CSV");
     return true;
 }
-    
+	
+	static boolean writeDataJson(ArrayList <Contact> arr) {
+		try {
+			String JSON_write_file ="C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\src\\DATAjson.txt";
+			Gson gson = new Gson();
+			String json = gson.toJson(arr);
+			FileWriter Writer = new FileWriter(JSON_write_file);
+			Writer.write(json);
+			Writer.close();
+		return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+	}
+	
 	static ArrayList<AddressBook> accessAddressBook(ArrayList<AddressBook> adbook) {
 		int key = 0;
 		System.out.println("Enter the address book name to be accessed");
@@ -288,6 +305,7 @@ public class Address {
 			}
 			writeData(adbook.get(j).ar);
 			writeDataCSV(adbook.get(j).ar);
+			writeDataJson(adbook.get(j).ar);
 		}
 		if (key == 0) {
 			System.out.println("******Address Book does not exist*******");
@@ -316,7 +334,7 @@ public class Address {
 	static void accessByState(ArrayList<AddressBook> adbook) {
 		System.out.println("Enter the State ");
 		String state = sc.next();
-		List<Contact> l = new ArrayList();
+		List<Contact> l = new ArrayList<Contact>();
 		for (int k = 0; k < adbook.size(); k++) {
 			l.addAll(searchNameByState(adbook.get(k), state));
 		}
@@ -342,7 +360,6 @@ public class Address {
 			System.out.println("5.PRINT DATA");
 			System.out.println("6.EXIT APPLICATION");
 			r = sc.nextInt();
-			AddressBook book;
 			switch (r) 
 			{
 			case 1: {
@@ -363,11 +380,10 @@ public class Address {
 			}
 			case 5: {
 				try {
-				FileReader f=new FileReader("C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\DATA.txt");
-				int i;    
-		          while((i=f.read())!=-1)    
-		          System.out.print((char)i);    
-		          f.close();
+					FileReader f=new FileReader("C:\\Users\\Latha r rao\\eclipse-work\\AddressBook\\src\\DATA.txt");
+					int i;    
+			          while((i=f.read())!=-1)    
+			          System.out.print((char)i);      
 				}
 				catch(Exception e) {
 					
